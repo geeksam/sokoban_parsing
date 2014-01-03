@@ -24,7 +24,7 @@ module Sokoban
     attr_reader :map
 
     def to_level
-      Sokoban::Level.new(rows)
+      Sokoban::Level.new(rows).with_reachability
     end
 
     private

@@ -1,11 +1,26 @@
 module Sokoban
   class Level
     class Cell
-      def initialize(contents = nil)
+      def initialize(contents = nil, level = nil)
         @contents = contents
+        @level    = level
       end
 
-      attr_reader :contents
+      attr_reader :contents, :level
+
+      def in_level(level)
+        self.class.new(contents, level)
+      end
+
+      def reachable?
+        !!@reachable
+      end
+
+      def reachable!
+        return if @reachable
+        @reachable = true
+        level.neighbors_of(self).each(&:reachable!)
+      end
 
       def inspect
         s = self.class.to_s.split('::').last
@@ -21,16 +36,20 @@ module Sokoban
     end
 
     class Wall < Cell
+      def reachable!; end
     end
 
     class Void < Cell
+      def reachable!; end
     end
 
     class Character; end
     class Crate; end
 
     def initialize(rows)
-      @rows = rows
+      @rows = rows.map {|row|
+        row.map {|cell| cell.in_level(self) }
+      }
     end
 
     attr_reader :rows
@@ -61,6 +80,29 @@ module Sokoban
 
     def starting_cell
       rows.flatten.detect {|cell| cell.contents.kind_of?(Character) }
+    end
+
+    def with_reachability
+      level = dup
+      level.determine_reachability!
+      rows_prime = level.rows.map {|row|
+        row.map {|cell| void_warranty_on(cell) }
+      }
+      self.class.new(rows_prime)
+    end
+
+    protected
+
+    def void_warranty_on(cell)
+      if cell.kind_of?(Floor) && !cell.reachable?
+        Void.new
+      else
+        cell.class.new(cell.contents)
+      end
+    end
+
+    def determine_reachability!
+      starting_cell.reachable!
     end
   end
 end
