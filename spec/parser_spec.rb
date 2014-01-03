@@ -79,5 +79,33 @@ describe Sokoban::Parser do
     it "contains the void" do
       expect(smugglers_level[6, 1]).to be_kind_of(Sokoban::Level::Void)
     end
+
+    describe "continuity map", bogus: true do
+      let(:cmap) { Sokoban::ContinuityMap.for_level(smugglers_level.rows) }
+
+      it "starts out as one would expect" do
+        expect(cmap.to_s).to eq(<<-END_MAP.gsub(/^\s*/, "").gsub(/\n\z/m, ''))
+        -------- 
+        -+   - - 
+        -------- 
+        END_MAP
+      end
+
+      it "produces a successor" do
+        expect(cmap.succ.to_s).to eq(<<-END_MAP.gsub(/^\s*/, "").gsub(/\n\z/m, ''))
+        -------- 
+        -++  - - 
+        -------- 
+        END_MAP
+      end
+
+      it "produces a fixed point" do
+        expect(cmap.fixed_point.to_s).to eq(<<-END_MAP.gsub(/^\s*/, "").gsub(/\n\z/m, ''))
+        -------- 
+        -++++- - 
+        -------- 
+        END_MAP
+      end
+    end
   end
 end

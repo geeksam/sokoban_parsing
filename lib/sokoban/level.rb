@@ -7,9 +7,17 @@ module Sokoban
 
       attr_reader :contents
 
+      def occupied?
+        contents.kind_of?(Character)
+      end
+
+      def passable?
+        true
+      end
+
       def inspect
         s = self.class.to_s.split('::').last
-        s.upcase! if contents.kind_of?(Character)
+        s.upcase! if occupied?
         s
       end
     end
@@ -21,6 +29,7 @@ module Sokoban
     end
 
     class Wall < Cell
+      def passable? ; false ; end
     end
 
     class Void < Cell
