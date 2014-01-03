@@ -7,10 +7,18 @@ module Sokoban
 
       attr_reader :contents
     end
-    class Floor < Cell; end
-    class Goal < Cell; end
-    class Wall < Cell; end
-    class Void < Cell; end
+
+    class Floor < Cell
+    end
+
+    class Goal < Cell
+    end
+
+    class Wall < Cell
+    end
+
+    class Void < Cell
+    end
 
     class Character; end
     class Crate; end
