@@ -6,6 +6,12 @@ module Sokoban
       end
 
       attr_reader :contents
+
+      def inspect
+        s = self.class.to_s.split('::').last
+        s.upcase! if contents.kind_of?(Character)
+        s
+      end
     end
 
     class Floor < Cell
