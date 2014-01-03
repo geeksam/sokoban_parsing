@@ -19,6 +19,7 @@ module Sokoban
     end
 
     class Void < Cell
+      def reachable?; false; end
     end
 
     class Character; end
