@@ -22,7 +22,10 @@ describe Sokoban::Level do
       expect(irregular_level[3, 0]).to_not be_reachable
     end
 
-    specify "other Cells are reachable if they contains the Player"
+    specify "other Cells are reachable if they contain a Character" do
+      expect(irregular_level[1, 1]).to be_reachable
+    end
+
     specify "other Cells are reachable if any of their neighbors is reachable"
   end
 end

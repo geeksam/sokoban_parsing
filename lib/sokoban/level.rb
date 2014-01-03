@@ -6,6 +6,10 @@ module Sokoban
       end
 
       attr_reader :contents
+
+      def reachable?
+        contents.kind_of?(Character)
+      end
     end
 
     class Floor < Cell
