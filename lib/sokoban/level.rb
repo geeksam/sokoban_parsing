@@ -15,6 +15,7 @@ module Sokoban
     end
 
     class Wall < Cell
+      def reachable?; false; end
     end
 
     class Void < Cell
