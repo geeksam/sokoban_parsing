@@ -63,4 +63,21 @@ describe Sokoban::Parser do
       expect(irregular_level[4, 0]).to be_kind_of(Sokoban::Level::Void)
     end
   end
+
+  context "levels with unreachable areas" do
+    let(:smugglers_map) {
+      <<-END_MAP.gsub(/^\s*/, "")
+      ########
+      #@ $.# #
+      ########
+      END_MAP
+    }
+    let(:smugglers_level) {
+      Sokoban::Parser.parse(smugglers_map)
+    }
+
+    it "contains the void" do
+      expect(smugglers_level[6, 1]).to be_kind_of(Sokoban::Level::Void)
+    end
+  end
 end
